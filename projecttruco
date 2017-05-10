@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include<stdlib.h>  
+#include <time.h>
+
+void darCartas(const char *palo[], const char *numero[]);
+
+int main(void){
+	const char *palo[4] = {"Espadas", "Oro", "Basto", "Copa"};
+	const char *numero[10] = {"As", "Dos", "Tres", "Cuatro", "Cinco", "Seis", "Siete", "Sota",
+		"Caballo", "Rey"};
+	srand(time(NULL));
+	
+	printf("\n Cartas para la maquina\n");
+	darCartas(palo, numero);
+	
+	printf("\n\n Pulse [Enter] para finalizar..."); getchar();
+	return 0;
+}
+
+void darCartas(const char *palo[], const char *numero[]){
+	int contWhile=0, conFor=0, _palo=0, _numero=0, ok=0;
+	int sel[12] = {11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11}, *ptrSel = sel;
+	
+	while(contWhile < 12){
+		_palo = rand() % 4;
+		_numero = rand() % 10;
+		for(conFor=0; conFor < 12; conFor += 2){
+			if(*(ptrSel + conFor) == _numero){
+				if(*(ptrSel + conFor+1) == _palo){
+					ok = 1;	
+				}
+			}
+		}
+		
+		if(ok == 0){
+			*(ptrSel + contWhile) = _numero;
+			contWhile++;
+			*(ptrSel + contWhile) = _palo;
+			contWhile++;
+		}else{ok=0;}
+	}
+	
+	printf("\n");
+	for(conFor=0; conFor < 12; conFor +=2){
+		printf(" %s de %s\n", *(numero + *(ptrSel + conFor)), *(palo + *(ptrSel + conFor+1)));
+		if(conFor == 4) printf("\n Cartas para el humano\n\n");
+	}
+}
